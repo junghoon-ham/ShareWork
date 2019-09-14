@@ -1,0 +1,423 @@
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        width:500px !important;
+        height:500px !important;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .map_wrap {position:relative;width:500px;height:500px;}
+      #menu_wrap {
+        z-index: 10000;
+        position:absolute;
+        top:0;
+        margin-left: 450px;
+        margin-top: 10px;
+      }
+      
+      .favorites {
+        padding: 12px;
+        margin-bottom: 10px;
+        background: white;
+        display: inline-block;
+        cursor: pointer;
+      }
+    </style>
+    
+    <script>
+      var map, infoWindow;
+      var markers, marker;
+      var pos = {};
+      var fav_y, fav_x;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 12,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          panControl: true,
+          zoomControl: false,
+          mapTypeControl: false,
+          scaleControl: false,
+          streetViewControl: false,
+          overviewMapControl: false
+        });
+        infoWindow = new google.maps.InfoWindow;
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            //infoWindow.setPosition(pos);
+            //infoWindow.setContent('Location found.');
+            //infoWindow.open(map);
+            var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+            var marker = new google.maps.Marker({position: pos, map: map, icon: image});
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+
+        markers = locations.map(function(location, i) {
+          var marker = new google.maps.Marker({
+            position: location,
+            //label: labels[i % labels.length]
+          });
+          
+          google.maps.event.addListener(marker, 'click', function() {
+            var data = { job_id: marker.id };
+            //var tag = selectTagObj(data);
+            
+            marker.distance = calcDistance(pos.lat, pos.lng, marker.y, marker.x);
+            gridListObj(marker);
+          });
+          
+          return marker;
+        });
+        
+        addMarkerData(); //마커 추가정보 입력
+        
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers, {
+          //maxZoom: 15,
+          imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        });
+        
+        google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
+            var data = cluster.getMarkers();
+            var length = data.length;
+            for(var i = 0; i < length; i++) {
+              data[i].distance = calcDistance(pos.lat, pos.lng, data[i].y, data[i].x);
+            }
+            gridList(data);
+        });
+      }
+      
+      function selectTagObj(data) {
+        var tagList;
+        $.post('/active/selectTag', data, 
+        function(returnedData){
+             console.log(returnedData);
+        }).fail(function(){
+              console.log("error");
+        }).done(function(result) {
+          alert(result);
+        });
+        
+        return tagList;
+      }
+      
+      function favoritesMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 12,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          panControl: true,
+          zoomControl: false,
+          mapTypeControl: false,
+          scaleControl: false,
+          streetViewControl: false,
+          overviewMapControl: false
+        });
+        infoWindow = new google.maps.InfoWindow;
+        
+        map.setCenter({lat: Number(fav_y), lng: Number(fav_x)});
+
+        markers = locations.map(function(location, i) {
+          var marker = new google.maps.Marker({
+            position: location,
+            //label: labels[i % labels.length]
+          });
+          
+          google.maps.event.addListener(marker, 'click', function() {
+            marker.distance = calcDistance(pos.lat, pos.lng, marker.y, marker.x);
+            gridListObj(marker);
+          });
+          
+          return marker;
+        });
+        
+        addMarkerData(); //마커 추가정보 입력
+        
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers, {
+          //maxZoom: 15,
+          imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        });
+        
+        google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
+            var data = cluster.getMarkers();
+            var length = data.length;
+            for(var i = 0; i < length; i++) {
+              data[i].distance = calcDistance(pos.lat, pos.lng, data[i].y, data[i].x);
+            }
+            gridList(data);
+        });
+      }
+      
+      function selectTag() {
+        alert(1);
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      }
+      
+      function addMarkerData() {
+        var length = markers.length;
+        for(var i = 0; i < length; i++) {
+            markers[i].id = id[i];
+            markers[i].bs_address = bs_address[i];
+            markers[i].bs_name = bs_name[i];
+            markers[i].time_start = time_start[i];
+            markers[i].time_end = time_end[i];
+            markers[i].pay = pay[i];
+            markers[i].y = y[i];
+            markers[i].x = x[i];
+            markers[i].date = date[i];
+            markers[i].address = address[i];
+        }
+        
+        
+      }
+      
+      function calcDistance(lat1, lon1, lat2, lon2){
+          var EARTH_R, Rad, radLat1, radLat2, radDist; 
+          var distance, ret;
+          EARTH_R = 6371000.0;
+          Rad 		= Math.PI/180;
+          radLat1 = Rad * lat1;
+          radLat2 = Rad * lat2;
+          radDist = Rad * (lon1 - lon2);
+          distance = Math.sin(radLat1) * Math.sin(radLat2);
+          distance = distance + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radDist);
+          ret 		 = EARTH_R * Math.acos(distance);
+          var rtn = Math.round(Math.round(ret) / 1000);
+         	if(rtn <= 0)
+         	{
+         		rtn = Math.round(ret) + " m";
+         	}else
+         	{
+         		rtn = rtn + " km";
+         	}
+          return  rtn;
+      }
+      
+      function gridList(data) {
+        
+          $(".work_list").empty();
+          
+          for(var i = 0; i < data.length; i++) {
+              var li$ = $('<li>');
+              $('<section>').append(
+                $('<a>').addClass('icon_fav').append(
+                  $('<i>').addClass('far fa-star')
+                ),
+                $('<div>').addClass('img').append(
+                  $('<img>').attr('src', 'https://www.menupan.com/restaurant/restimg/000/zzmenuimg/h3024404_z.jpg')
+                ),
+                $('<div>').addClass('info').append(
+                  $('<div>').addClass('title').text(data[i].bs_name + ' ').append(
+                    $('<span>').text(data[i].address),
+                    $('<span>').addClass('loc').text(data[i].distance)
+                  ),
+                  $('<a>').addClass('tag').text('#주방 보조'),
+                  $('<a>').addClass('tag').text('#서빙'),
+                  $('<a>').addClass('tag').text('#배달')
+                )
+              ).appendTo(li$);
+              
+              $('<ul>').addClass('info2').append(
+                $('<li>').text(data[i].date),
+                $('<li>').text(data[i].time_start + '시 ~ ' + data[i].time_end + '시'),
+                $('<li>').text('시급 ' + data[i].pay + '원').append(
+                  $('<span>').addClass('icon-blue').text('당일지급')
+                )
+              ).appendTo(li$);
+              
+              $('<span>').addClass('btn_apply').text('바로지원').data('id', data[i].id).append(
+                $('<i>').addClass('fas fa-chevron-right')  
+              ).appendTo(li$);
+              
+              $('.work_list').append(li$);
+          }
+      }
+      
+      function gridListObj(data) {
+          $(".work_list").empty();
+          
+          var li$ = $('<li>');
+          $('<section>').append(
+            $('<a>').addClass('icon_fav').append(
+              $('<i>').addClass('far fa-star')
+            ),
+            $('<div>').addClass('img').append(
+              $('<img>').attr('src', 'https://www.menupan.com/restaurant/restimg/000/zzmenuimg/h3024404_z.jpg')
+            ),
+            $('<div>').addClass('info').append(
+              $('<div>').addClass('title').text(data.bs_name + ' ').append(
+                $('<span>').text(data.address),
+                $('<span>').addClass('loc').text(data.distance)
+              ),
+              $('<a>').addClass('tag').text('#주방 보조'),
+              $('<a>').addClass('tag').text('#서빙'),
+              $('<a>').addClass('tag').text('#배달')
+            )
+          ).appendTo(li$);
+          
+          $('<ul>').addClass('info2').append(
+            $('<li>').text(data.date),
+            $('<li>').text(data.time_start + '시 ~ ' + data.time_end + '시'),
+            $('<li>').text('시급 ' + data.pay + '원').append(
+              $('<span>').addClass('icon-blue').text('당일지급')
+            )
+          ).appendTo(li$);
+          
+          $('<span>').addClass('btn_apply').text('바로지원').data('id', data.id).append(
+            $('<i>').addClass('fas fa-chevron-right')  
+          ).appendTo(li$);
+          
+          $('.work_list').append(li$);
+      }
+      
+      var job = <%= raw @job %>
+      var id = [];
+      var bs_address = [];
+      var bs_name = [];
+      var time_start = [];
+      var time_end = [];
+      var pay = [];
+      var distance = [];
+      var locations = [];
+      var y = [];
+      var x = [];
+      var date = [];
+      var address = [];
+      
+      $(function(){
+        for(var i = 0; i < job.length; i++) {
+          id.push(job[i].id);
+          bs_address.push(job[i].bs_address);
+          bs_name.push(job[i].bs_name);
+          time_start.push(job[i].time_start);
+          time_end.push(job[i].time_end);
+          pay.push(job[i].pay);
+          locations.push({lat: Number(job[i].y), lng: Number(job[i].x)});
+          y.push(job[i].y);
+          x.push(job[i].x);
+          date.push(job[i].date);
+          address.push(job[i].address);
+        }
+        
+        $(document).on('click','.btn_apply', function(){
+          var id = $(this).data('id');
+          location.href = "/active/create_application?id=" + id;
+        });
+        
+        $('#geoList').on('click', function(){
+          location.href="/active/geo_list?y=" + pos.lat + "&x=" + pos.lng;
+        });
+        
+        $('#currentLocation').on('click', function() {
+          initMap();
+        });
+        
+        $('#favorites_0').on('click', function() {
+          fav_y = $('#favorites_y_0').val();
+          fav_x = $('#favorites_x_0').val();
+          favoritesMap();
+        });
+        
+        $('#favorites_1').on('click', function() {
+          fav_y = $('#favorites_y_1').val();
+          fav_x = $('#favorites_x_1').val();
+          favoritesMap();
+        });
+        
+        $('#createFavorites').on('click', function() {
+          location.href = "/active/create_favorites";
+        })
+        
+        $('#Applicant').on('click', function() {
+          location.href = "/active/list_application";
+        });
+      });
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7hFvqWN9sgQerWvWN7UTkRYI2yfKtlnk&callback=initMap&libraries=geometry,places">
+    </script> 
+    
+    <div id="wrap"><!--wrap-->
+
+
+        <div id="maparea">
+          <div id="sch">
+                <input type="text" placeholder="어느지역에서 일하고 싶으세요?">
+                <span class="favorites" id="currentLocation"></span> 
+            </div>
+
+            <div class="map_wrap">
+              
+              
+            <div id="map"style="width:50%; height:70%;"></div>
+      
+            <!--즐찾버튼-->
+            <div id="fav">
+                <% if @favorites != nil %>
+                  <% @count = 0 %>
+                  <% while @count < @favorites.length %>
+                    <span class="favorites btn_fav2" id="favorites_<%= @count %>"></span> <br />
+                    <input type="hidden" id="favorites_y_<%= @count %>" value=<%= @favorites[@count].y %>>
+                    <input type="hidden" id="favorites_x_<%= @count %>" value=<%= @favorites[@count].x %>>
+                    <% @count = @count + 1 %>
+                  <% end %>
+                <% end %>
+            </div>
+            <!--즐찾버튼-->
+    </div>
+
+        </div>
+
+        <div id="container" class="recm">
+
+            <h5>이 알바는 어때요?</h5>
+            <i class="fas fa-sort-amount-down"></i>
+            <ul class="work_list">
+              
+            </ul>
+
+
+
+
+        </div>
+
+
+
+        
+        
+
+
+
+    </div><!--wrap-->
+    
+    
+    

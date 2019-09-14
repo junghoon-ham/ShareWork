@@ -1,0 +1,55 @@
+<script>
+    $(function(){
+        var id = '';
+        
+      $(document).on("click","#bsList div",function(){ 
+          $('.select').removeClass();
+          $(this).addClass('select');
+          
+          id = $(this).data('id');
+        
+          var f = document.changeform; 
+          f.id.value = id;
+      });
+      
+      $('#btn_save').on('click', function(){
+          if(id == '') {
+              location.href="index";
+              return;
+          }
+              
+          var f = document.changeform; 
+          f.submit(); 
+      });
+    });
+</script>
+
+<style>
+    .select {
+        background-color: #C7D3ED;
+    }
+</style>
+
+<div id="bsList">
+    <% @bussiness.each do |bussiness| %>
+        <% if bussiness.state == 'Y' %>
+            <div style="border: 1px solid gray" class="select" data-id=<%= bussiness.id %>>
+                <%= bussiness.bs_name %><br />
+                <%= bussiness.address %><br />
+            </div>
+        <% else %>
+            <div style="border: 1px solid gray" data-id=<%= bussiness.id %>>
+                <%= bussiness.bs_name %><br />
+                <%= bussiness.address %><br />
+            </div>
+        <% end %>
+    <% end %>
+</div>
+
+<span id="btn_save" style="border: 1px solid blue; cursor: pointer;">변경 완료</span>
+
+
+<form method="post" name="changeform" action="/bussiness/change"> 
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <input type="hidden" id="id" name="id"> 
+</form> 

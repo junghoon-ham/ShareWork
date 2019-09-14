@@ -1,0 +1,108 @@
+<script>
+    mobiscroll.settings = {
+    theme: 'ios',
+    display: 'bubble'
+};
+
+var now = new Date();
+
+mobiscroll.form('#demo-time-form', {
+    inputStyle: 'box',
+    labelStyle: 'stacked'
+});
+
+mobiscroll.time('#demo-time-mobile', {
+    onInit: function (event, inst) {
+        inst.setVal(now, true);
+    }
+});
+
+mobiscroll.time('#demo-time-desktop', {
+    touchUi: false,
+    onInit: function (event, inst) {
+        inst.setVal(now, true);
+    }
+});
+
+mobiscroll.time('#demo-time-12h', {
+    timeFormat: 'hh:ii A',
+    onInit: function (event, inst) {
+        inst.setVal(now, true);
+    }
+});
+
+mobiscroll.time('#demo-time-24h', {
+    timeFormat: 'HH:ii',
+    onInit: function (event, inst) {
+        inst.setVal(now, true);
+    }
+});
+
+mobiscroll.time('#demo-time-hms', {
+    timeFormat: 'HH:ii:ss',
+    headerText: 'Time: {value}',
+    onInit: function (event, inst) {
+        inst.setVal(now, true);
+    }
+});
+
+mobiscroll.time('#demo-time-non-form', {
+    onInit: function (event, inst) {
+        inst.setVal(now, true);
+    }
+});
+
+var instance = mobiscroll.date('#demo-time-external', {
+    showOnTap: false,
+    showOnFocus: false,
+    onInit: function (event, inst) {
+        inst.setVal(new Date(), true);
+    }
+});
+
+document
+    .getElementById('show-demo-time-external')
+    .addEventListener('click', function () {
+        instance.show();
+    }, false);
+</script>
+
+<div>
+<% if user_signed_in? %>
+        <%= link_to "회원정보", edit_user_registration_path %>
+        <%= link_to "로그아웃", destroy_user_session_path, method: :delete %>
+<% else %>
+        <%= link_to "로그인", user_session_path %>
+        <%= link_to "회원가입", "/users/sign_up" %>
+<% end %>
+</div>
+<hr/>
+<%= alert %>
+<%= notice %>
+<h2 style="font-weight: bold">로그인 정보</h2>
+<% if user_signed_in? %>
+    <div>
+        <% if current_user.address1 == "" || current_user.address2 == "" || current_user.name == "" || current_user.email == "" || current_user.usertype =="" ||current_user.phone ==""||current_user.accountNum == ""%>
+            <script>
+                alert("추가 정보를 입력하셔야 원활한 서비스를 이용하 실수 있습니다\n아래 <추가정보 입력하기> 버튼을 확인해 주세요!");
+            </script>
+        <% end%><br/>
+        아이디 : <%= current_user.email %><br/>
+        유저 No. : <%= current_user.id %>
+    </div><br/>
+    
+<% else %>
+    로그인 되어있지 않음.
+<% end %>
+<br/>
+<% if user_signed_in? && current_user.usertype == '1' %><!--업주 부분-->
+    <a href="/bussiness/index">업주 페이지</a>
+<% elsif user_signed_in? && current_user.usertype =='0' %><!--알바 부분-->
+    <a href="/active/index1">알바 페이지</a>
+<% end %>
+<br/>
+<% if user_signed_in? %>
+     <%= link_to "MY PAGE", mypage_main_path%>
+<% else %>
+        
+<% end %>

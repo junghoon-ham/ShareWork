@@ -1,0 +1,59 @@
+<style>
+  .success {
+         position:fixed;background:#4FC9DE;height:55px;left:0;bottom:0;
+    text-align:center;border-top:1px solid #ddd;max-width:500px;margin:0 auto;bottom: 0; left: 0; right: 0;
+       }
+</style>
+
+<script>
+    function createToast(t) {
+        switch (t) {
+          case 'success':
+            $.toast('지원 완료', {
+              //sticky: true,
+              duration: 2000,
+              type: 'success'
+            });
+            return;
+        }
+      }
+      
+    $(function(){
+      $('#menu').remove();
+      
+      $('.success').on('click', function(){
+        var con = confirm('지원하시겠습니까?');
+        if(con == false) {
+          return;
+        }
+        var f = document.writeForm;
+        f.submit();
+      });
+    });
+</script>
+
+<div id="wrap">
+  <form method="post" name="writeForm" action="/active/createApplication">
+      <div>
+          <%= @bussiness.bs_name %> <br /><br />
+          날짜 <br />
+          <%= @job.date %> <br /><br />
+          시간 <br />
+          <%= @job.time_start %>시 ~ <%= @job.time_end %> <br /><br />
+          시급 <br />
+          <%= @job.pay %>원 <br /><br />
+          상세내용 <br />
+          <%= @job.etc %><br /><br />
+          지원자 현황 <br />
+          <%= @job.personnel %>명 모집 <br />
+          <%= @job.personnel_cnt %>명 지원 <br /><br />
+      </div>
+      
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <input type="hidden" name="job_id" value=<%= @job.id %>>
+      <div class="success" style="cursor: pointer;">지원하기</div>
+  </form>
+</div>
+
+
+

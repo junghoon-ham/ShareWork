@@ -1,0 +1,42 @@
+<div id="wrap" class="index"><!--wrap-->
+<img src="/img/logo.png" class="logo wow slideInUp" data-wow-duration="2s" data-wow-delay="0.5s"><br>
+<div class="wow slideInUp" data-wow-duration="2s" data-wow-delay="2s">실시간 알바 매칭 가이드</div>
+
+<br style="clear:bot;">
+
+<div class="form_wrap" style="display:none;">
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="field">
+    <span><i class="fa fa-envelope" aria-hidden="true"></i></span>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "frm_default frm_fa", placeholder: "아이디" %>
+  </div>
+  
+  <div class="field">
+    <span><i class="fa fa-lock" aria-hidden="true" style="font-size:15pt;"></i></span>
+    <%= f.password_field :password, autocomplete: "current-password", class: "frm_default frm_fa", placeholder: "패스워드" %>
+  </div>
+
+  <% if devise_mapping.rememberable? %>
+    <div class="field">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me %>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit "로그인",  class: "btn_login" %>
+  </div>
+<% end %>
+</div>
+
+<div id="sns_login_wrap" style="margin-top:120px;">
+  
+<%= render "devise/shared/links" %><br/>
+<%= link_to "회원가입", "/users/sign_up", class: "sns_login email" %>
+</div>
+
+</div>
+
+
+

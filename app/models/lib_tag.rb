@@ -1,0 +1,2 @@
+class LibTag < ApplicationRecord
+end

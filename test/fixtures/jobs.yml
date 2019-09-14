@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bussiness_id: MyString
+  date: MyString
+  time_start: MyString
+  time_end: MyString
+  pay: MyString
+  status: MyString
+
+two:
+  bussiness_id: MyString
+  date: MyString
+  time_start: MyString
+  time_end: MyString
+  pay: MyString
+  status: MyString

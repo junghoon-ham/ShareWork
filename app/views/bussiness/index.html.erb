@@ -1,0 +1,74 @@
+<script>
+  $(function(){
+    $('#create_job').on('click', function(){
+      var bs = $('#bussiness').val();
+      if(bs == undefined) {
+        alert('사업장을 등록해주세요.');
+        return;
+      } else {
+        location.href = "/bussiness/create_job?id=" + bs;
+      }
+    });
+    
+    $('#location').on('click', function(){
+      location.href = "/bussiness/location";
+    });
+    
+    $('.job_list').on('click', function(){
+      var id = $(this).data('id');
+      location.href = "/bussiness/show_job?id=" + id;
+    });
+  });
+</script>
+
+<div id="wrap">
+  <span id="location" style="border: 1px solid blue; cursor: pointer;">사업장 등록</span><br />
+  <span id="create_job" style="border: 1px solid blue; cursor: pointer;">구인글 등록</span><br /><br />
+  
+  선택된 사업장<br />
+  <% if @bussiness != nil %>
+    <div style="border: 1px solid gray">
+        <%= @bussiness.bs_name %><br />
+        <%= @bussiness.address %><br />
+        <a href="/bussiness/change_bs">사업장 변경</a>
+    </div>
+  <% else %>
+    <br />
+    사업장을 등록해주세요. <br />
+  <% end %>
+  <br />
+  
+  등록된 일자리
+  <% if @job != nil %>
+    <ul class="work_list">
+      <% @job.each do |job| %>
+          <li class="job_list" data-id=<%= job.id %>> 
+              <section>
+                  <a href="#" class="icon_fav"></a>
+                  <div class="img"></div>
+                  <div class="info">
+                      <div class="title"><%= job.bs_name %> <span><%= job.address %></span></div>
+                      <a href="#" class="tag">#바리스타</a>
+                      <a href="#" class="tag">#서빙</a>
+                      <a href="#" class="tag">#당일지급</a>
+                  </div>
+              </section>
+
+              <ul class="info2">
+              <li><%= job.date %></li>
+              <li><%= job.time_start %>시 ~ <%= job.time_end %>시</li>
+              <li>시급 <%= job.pay %>원 <span class="icon-blue">당일지급</span></li>
+              <li>지원자 <%= job.personnel_cnt %> / <%= job.personnel %></li>
+              </ul>
+          </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <br />
+    등록된 일자리가 없습니다.
+  <% end %>
+  
+  <% if @bussiness != nil %>
+    <input type="hidden" id="bussiness" value=<%= @bussiness.id %>>
+  <% end %>
+</div>

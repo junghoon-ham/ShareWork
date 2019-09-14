@@ -1,0 +1,443 @@
+
+<style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+        <div id="map" style="width:50%; height:70%;"></div>
+        
+        <table id="gridList"></table>
+    
+    <script>
+      var myY;
+      var myX;
+      var map;
+      
+      var y = 0;
+      var x = 0;
+      var myLocation;
+      
+      var id = [];
+      var bs_address = [/*
+            '함슨 병원',
+            '함슨 카페',
+            '함슨 집',
+            '함슨 피시방',
+            '함슨 게임방',
+            '파커 병원',
+            '파커 카페',
+            '파커 집',
+            '파커 피시방',
+            '파커 게임방',
+            '케빈 병원',
+            '케빈 카페',
+            '케빈 집',
+            '케빈 피시방',
+            '케빈 게임방',
+            '에블린 병원',
+            '에블린 카페',
+            '에블린 집',
+            '에블린 피시방',
+            '에블린 게임방',
+            '데이빗 병원',
+            '데이빗 카페',
+            '데이빗 집'*/
+        ];
+        var bs_name = [/*
+            '함슨 병원',
+            '함슨 카페',
+            '함슨 집',
+            '함슨 피시방',
+            '함슨 게임방',
+            '파커 병원',
+            '파커 카페',
+            '파커 집',
+            '파커 피시방',
+            '파커 게임방',
+            '케빈 병원',
+            '케빈 카페',
+            '케빈 집',
+            '케빈 피시방',
+            '케빈 게임방',
+            '에블린 병원',
+            '에블린 카페',
+            '에블린 집',
+            '에블린 피시방',
+            '에블린 게임방',
+            '데이빗 병원',
+            '데이빗 카페',
+            '데이빗 집'*/
+        ];
+        var time_start = [/*
+            '09',
+            '15',
+            '14',
+            '17',
+            '19',
+            '16',
+            '13',
+            '11',
+            '10',
+            '15',
+            '17',
+            '19',
+            '11',
+            '15',
+            '16',
+            '18',
+            '17',
+            '16',
+            '09',
+            '15',
+            '11',
+            '13',
+            '12'*/
+        ];
+        var time_end = [/*
+            '15',
+            '14',
+            '17',
+            '19',
+            '16',
+            '13',
+            '11',
+            '10',
+            '15',
+            '17',
+            '19',
+            '11',
+            '15',
+            '16',
+            '18',
+            '17',
+            '16',
+            '09',
+            '15',
+            '11',
+            '13',
+            '12',
+            '09'*/
+        ];
+        var pay = [/*
+            '150,000',
+            '170,000',
+            '180,000',
+            '150,000',
+            '160,000',
+            '110,000',
+            '100,000',
+            '120,000',
+            '130,000',
+            '150,000',
+            '140,000',
+            '170,000',
+            '150,000',
+            '170,000',
+            '180,000',
+            '150,000',
+            '160,000',
+            '110,000',
+            '100,000',
+            '120,000',
+            '250,000',
+            '210,000',
+            '290,000'*/
+        ];
+        
+      var data = {/*
+        "locations" : [
+          {lat: 37.564035, lng: 126.983890},
+          {lat: 37.560944, lng: 126.973169},
+          {lat: 37.506755, lng: 126.803623},
+          {lat: 37.566925, lng: 127.007930},
+          {lat: 37.555756, lng: 126.986220},
+          {lat: 37.562813, lng: 126.959361},
+          {lat: 37.559853, lng: 127.029671},
+          {lat: 37.527383, lng: 126.984997},
+          {lat: 37.500628, lng: 126.787038},
+          {lat: 37.496643, lng: 126.811332},
+          {lat: 37.490448, lng: 126.771753},
+          {lat: 37.567870, lng: 126.952957},
+          {lat: 37.462303, lng: 126.856171},
+          {lat: 37.476492, lng: 126.857397},
+          {lat: 37.551738, lng: 127.019458},
+          {lat: 37.557741, lng: 126.955538},
+          {lat: 37.571976, lng: 126.993859},
+          {lat: 37.588153, lng: 126.965696},
+          {lat: 37.494595, lng: 126.803675},
+          {lat: 37.496505, lng: 126.764057},
+          {lat: 37.557788, lng: 126.991329},
+          {lat: 37.546636, lng: 126.986237},
+          {lat: 37.446636, lng: 126.786237}
+        ]*/
+      }
+      
+      var locations = [/*
+        {lat: 37.564035, lng: 126.983890},
+        {lat: 37.560944, lng: 126.973169},
+        {lat: 37.506755, lng: 126.803623},
+        {lat: 37.566925, lng: 127.007930},
+        {lat: 37.555756, lng: 126.986220},
+        {lat: 37.562813, lng: 126.959361},
+        {lat: 37.559853, lng: 127.029671},
+        {lat: 37.527383, lng: 126.984997},
+        {lat: 37.500628, lng: 126.787038},
+        {lat: 37.496643, lng: 126.811332},
+        {lat: 37.490448, lng: 126.771753},
+        {lat: 37.567870, lng: 126.952957},
+        {lat: 37.462303, lng: 126.856171},
+        {lat: 37.476492, lng: 126.857397},
+        {lat: 37.551738, lng: 127.019458},
+        {lat: 37.557741, lng: 126.955538},
+        {lat: 37.571976, lng: 126.993859},
+        {lat: 37.588153, lng: 126.965696},
+        {lat: 37.494595, lng: 126.803675},
+        {lat: 37.496505, lng: 126.764057},
+        {lat: 37.557788, lng: 126.991329},
+        {lat: 37.546636, lng: 126.986237},
+        {lat: 37.446636, lng: 126.786237} */
+      ];
+      
+      var distance = [];
+      getLocation();
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: {lat: y, lng: x}
+        });
+        
+        // Create an array of alphabetical characters used to label the markers.
+        //var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = locations.map(function(location, i) {
+          var marker = new google.maps.Marker({
+            position: location,
+            //label: labels[i % labels.length]
+          });
+          
+          google.maps.event.addListener(marker, 'click', function() {
+            gridListObj(marker);
+          });
+          
+          return marker;
+        });
+        
+       myLocationMarker(location);
+        
+        
+        for(var i = 0; i < markers.length; i++) {
+            markers[i].id = id[i];
+            markers[i].bs_address = bs_address[i];
+            markers[i].bs_name = bs_name[i];
+            markers[i].time_start = time_start[i];
+            markers[i].time_end = time_end[i];
+            markers[i].pay = pay[i];
+            markers[i].distance = distance[i];
+        } 
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers, {
+          imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+          minZoom: 10
+          
+        });
+            
+        google.maps.event.addListener(markerCluster, 'clusterclick', function(cluster) {
+            var data = cluster.getMarkers();
+            gridList(data);
+        });
+      }
+      
+      function gridList(data) {
+          $("#gridList").empty();
+          
+          var head = "<thead>";
+          head += "<tr>";
+          head += "<th>NO</th>"
+          head += "<th>업체 이름</th>"
+          head += "<th>시간</th>"
+          head += "<th>시급</th>"
+          head += "<th>거리</th>"
+          head += "</tr>";
+          $("#gridList").append(head);
+          
+          for(var i = 0; i < data.length; i++) {
+              var row = "<tr>";
+              row += "<td>" + (i + 1) + "</td>"; 
+              row += "<td>" + data[i].bs_name +"</td>";
+              row += "<td>" + data[i].time_start + "시 ~ " + data[i].time_end + "시" + "</td>";
+              row += "<td>" + data[i].pay +"원</td>";
+              row += "<td>" + data[i].distance +"</td>";
+              row += "<td>" + "<span class='apply' data-id=" + data[i].id + ">바로지원</span>" +"</td>";
+              row += "</tr>";
+              $("#gridList").append(row);
+          }
+      }
+      
+      function gridListObj(data) {
+          $("#gridList").empty();
+          
+          var head = "<thead>";
+          head += "<tr>";
+          head += "<th>NO</th>"
+          head += "<th>업체 이름</th>"
+          head += "<th>시간</th>"
+          head += "<th>시급</th>"
+          head += "<th>거리</th>"
+          head += "</tr>";
+          $("#gridList").append(head);
+          
+          var row = "<tr>";
+          row += "<td>" + 1 + "</td>"; 
+          row += "<td>" + data.bs_name +"</td>";
+          row += "<td>" + data.time_start + "시 ~ " + data.time_end + "시" + "</td>";
+          row += "<td>" + data.pay +"원</td>";
+          row += "<td>" + data.distance +"</td>";
+          row += "<td>" + "<span class='apply' data-id=" + data.id + ">바로지원</span>" +"</td>";
+          row += "</tr>";
+          $("#gridList").append(row);
+      }
+      
+      function getLocation() {
+        if (navigator.geolocation) { // GPS를 지원하면
+          navigator.geolocation.getCurrentPosition(function(position) {
+            myLocation = [position.coords.latitude, position.coords.longitude];
+            myY = position.coords.latitude;
+            myX = position.coords.longitude;
+            getMyLocation(myLocation);
+          }, function(error) {
+            console.error(error);
+          }, {
+            enableHighAccuracy: false,
+            maximumAge: 0,
+            timeout: Infinity
+          });
+          
+        } else {
+          alert('GPS를 지원하지 않습니다');
+        }
+      }
+      
+      
+      
+      // Testing the addMarker function
+      var marker;
+      
+    function myLocationMarker(location) {
+      var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+           var location = new google.maps.LatLng(location[0], location[1]);
+           marker = new google.maps.Marker({
+            position: location,
+            map: map,
+            icon: image
+        });
+    }
+    
+    
+      
+    function calcDistance1(lat1, lon1, lat2, lon2){
+          var EARTH_R, Rad, radLat1, radLat2, radDist; 
+          var distance, ret;
+          EARTH_R = 6371000.0;
+          Rad 		= Math.PI/180;
+          radLat1 = Rad * lat1;
+          radLat2 = Rad * lat2;
+          radDist = Rad * (lon1 - lon2);
+          distance = Math.sin(radLat1) * Math.sin(radLat2);
+          distance = distance + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radDist);
+          ret 		 = EARTH_R * Math.acos(distance);
+          var rtn = Math.round(Math.round(ret) / 1000);
+         	if(rtn <= 0)
+         	{
+         		rtn = Math.round(ret) + " m";
+         	}else
+         	{
+         		rtn = rtn + " km";
+         	}
+          return  rtn;
+      }
+      
+      function getMyLocation(myLoc) {
+        y = myLocation[0];
+        x = myLocation[1];
+        myLocation = this.myLoc;
+        insertData();
+         
+      }
+      
+       var jobCount = '<%= @job.length %>';
+      var jobList = [];
+      var jobObj = {};
+      
+      function insertData() {
+     
+      for(var i = 0; i < jobCount; i++) {
+        data_id = $('#jobObj_' + i + ' #id_' + i).val();
+        data_bs_name = $('#jobObj_' + i + ' #bs_name_' + i).val();
+        data_address = $('#jobObj_' + i + ' #address_' + i).val();
+        data_phone = $('#jobObj_' + i + ' #phone_' + i).val();
+        data_pay = $('#jobObj_' + i + ' #pay_' + i).val();
+        data_time_start = $('#jobObj_' + i + ' #time_start_' + i).val();
+        data_time_end = $('#jobObj_' + i + ' #time_end_' + i).val();
+        data_y = $('#jobObj_' + i + ' #y_' + i).val();
+        data_x = $('#jobObj_' + i + ' #x_' + i).val();
+        
+        id.push(data_id);
+        bs_name.push(data_bs_name);
+        //address.push(data_address);
+        //phone.push(data_phone);
+        pay.push(data_pay);
+        time_start.push(data_time_start);
+        time_end.push(data_time_end);
+        var location = {lat: Number(data_y), lng: Number(data_x)};
+        locations.push(location);
+        distance.push(calcDistance1(y, x, data_y, data_x));
+      }
+      }
+    
+    $(function(){
+      $(document).on('click','.apply', function(){
+        var id = $(this).data('id');
+        
+      });
+      
+      var a = <%= raw @job_json %>
+  
+    });
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7hFvqWN9sgQerWvWN7UTkRYI2yfKtlnk&callback=initMap">
+    </script> 
+    
+    <div >
+      <% @count = 0 %>
+      <% while @count < @job.length %>
+        <div id="jobObj_<%= @count %>">
+          <input id="id_<%= @count %>" type="hidden" value=<%= @job[@count].id %>>
+          <input id="bs_name_<%= @count %>" type="hidden" value=<%= @job[@count].bs_name %>>
+          <input id="address_<%= @count %>" type="hidden" value=<%= @job[@count].address %>>
+          <input id="phone_<%= @count %>" type="hidden" value=<%= @job[@count].phone %>>
+          <input id="pay_<%= @count %>" type="hidden" value=<%= @job[@count].pay %>>
+          <input id="time_start_<%= @count %>" type="hidden" value=<%= @job[@count].time_start %>>
+          <input id="time_end_<%= @count %>" type="hidden" value=<%= @job[@count].time_end %>>
+          <input id="y_<%= @count %>" type="hidden" value=<%= @job[@count].y %>>
+          <input id="x_<%= @count %>" type="hidden" value=<%= @job[@count].x %>>
+        </div>
+        <% @count = @count + 1 %>
+      <% end %>
+    </div>
+    

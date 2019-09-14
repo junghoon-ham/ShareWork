@@ -1,0 +1,22 @@
+<script>
+  $(function(){
+    
+  });
+</script>
+
+일 정보 <br />
+날짜 : <%= @job.date %> <br />
+시간 : <%= @job.time_start %>시 ~ <%= @job.time_end %>시<br />
+시급 : <%= @job.pay %> <br />
+상세내용 <br />
+<%= @job.etc %>
+<br /><br /><br />
+
+<a href="/bussiness/show_applicant?id=<%= @job.id %>">지원자 현황</a>
+<% @application.each do |application| %>
+  <div class="application_list" data-id=<%= application.id %> style="border: 1px solid gray">
+      이름 : <%= application.name %> <br />
+      주소 : <%= application.address1 %> <br />
+      전화번호 : <%= application.phone %> <br />
+  </div>
+<% end %>

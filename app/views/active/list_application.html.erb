@@ -1,0 +1,128 @@
+<script>
+  function createToast(t) {
+    switch (t) {
+      case 'danger':
+        $.toast('지원 취소', {
+          //sticky: true,
+          duration: 2000,
+          type: 'danger'
+        });
+        return;
+    }
+  }
+  
+  $(function() {
+    $('.danger').on('click', function(){
+      var id = $(this).data('id');
+      
+      $.post('/active/appriedCancel', { id: id }, 
+      function(returnedData){
+           console.log(returnedData);
+      }).fail(function(){
+        alert('error');
+      }).done(function(){
+        window.location.reload();
+        createToast($(this).attr('class'));
+      });
+    });
+  });
+</script>
+
+
+<div id="wrap">
+  
+  
+  <div id="top_title2">지원내역</div>
+  
+      <ul id="status">
+        <li><span>근무시간</span><br>30시간 10분</li>
+        <li><span>알바비</span><br>250,000원</li>
+      </ul>
+ 
+      <div id="graybar"></div>
+       
+
+      <ul class="tabs">
+          <li class="active" rel="tab1">지원중 <div>4</div></li>
+          <li rel="tab2">마감 <div>10</div></li>
+
+      </ul>
+      
+      
+
+      
+      
+      <div class="tab_container">
+
+          <!-- #tab1 : 지원중 -->
+          <div id="tab1" class="tab_content">
+            
+            지원한게 안나오네용
+              
+              <ul class="work_list">
+                <% @application.each do |a| %>
+                  <% if a.status == 'appried' %>
+                    <li> 
+                        <section>
+                            <a href="#" class="icon_fav"><i class="far fa-star"></i></a>
+                            <div class="img"><img src="https://www.menupan.com/restaurant/restimg/000/zzmenuimg/h3024404_z.jpg"></div>
+                            <div class="info">
+                                <div class="title"><%= a.bs_name %> <span>서울,선릉로</span><span class="loc">250m</span></div>
+                                <a href="#" class="tag">#홀서빙</a>
+                                <a href="#" class="tag">#주방보조</a>
+                                <a href="#" class="tag">#당일지급</a>
+                            </div>
+                        </section>
+            
+                            <ul class="info2">
+                            <li><%= a.date %></li>
+                            <li><%= a.time_start %>시 ~ <%= a.time_end %>시</li>
+                            <li>시급 <%= a.pay %>원 <span class="icon-blue">당일지급</span></li>
+                            </ul>
+                            <span class="danger btn_apply" data-id=<%= a.id %>>지원취소<i class="fas fa-chevron-right"></i></span>
+                    </li>
+                   <% end %>
+                <% end %>
+              </ul>
+            
+
+          </div>
+
+          
+
+          <div id="tab2" class="tab_content">
+
+
+            마감 리스트 들어가야해용
+
+
+          </div>
+
+
+      </div>
+      
+      
+      
+      
+
+  <script>
+    $(function () {
+    
+      $(".tab_content").hide();
+      $(".tab_content:first").show();
+      
+      $("ul.tabs li").click(function () {
+      $("ul.tabs li").removeClass("active").css("color", "#8a8a8a");
+      $(this).addClass("active").css("color", "#82d7d2");
+      $(".tab_content").hide()
+      var activeTab = $(this).attr("rel");
+      $("#" + activeTab).fadeIn()
+      });
+    });
+		</script>
+
+
+
+
+
+</div>

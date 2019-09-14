@@ -1,0 +1,62 @@
+
+<!--<img src="<%=current_user.profileImg%>" alt="등록된 프로필 사진이 없습니다.">-->
+
+
+
+
+    <div id="wrap"><!--wrap-->
+
+        <div id="profile">
+            <div class="pull-left col-md-3">
+                
+                <div class="profile_thumb">
+                    <div class="btn_upload"><i class="fas fa-camera"></i></div>
+                    <div class="img"><img src="<%=current_user.profileImg%>" alt="등록된 프로필 사진이 없습니다."></div>
+               </div>
+            
+            </div>
+            <div class="pull-right col-md-9">
+
+                <span class="name"><%=current_user.name%> </span> <span class="certi">인증회원</span><br>
+
+                <%=current_user.provider%>연동<br/>
+                abcde@naver.com<br>
+                <%=current_user.accountNum%>
+
+                <%if current_user.phone? %><br><%=current_user.phone%><%end %>
+                
+                <button class="btn_modify" onclick="location.href='/add_information/add/<%=current_user.id%>'"></button>
+                
+            </div>
+        </div>
+
+        <div id="list_menu">
+
+            <ul>
+
+                <li>알림설정</li>
+                <li>푸시알림받기</li>
+                <li>SMS수신받기</li>
+
+                <li class="arrow">공지사항</li>
+                <li class="arrow">이용약관</li>
+                <li class="arrow">고객문의</li>
+                <!--<li class="arrow"> <a href="/add_information/add/<%=current_user.id%>">추가정보 입력 및 수정하기</a></li>-->
+                <% if user_signed_in? %>
+                    <li><%= link_to "로그아웃", destroy_user_session_path, method: :delete %></li>
+                <%end %>
+               
+
+
+
+            </ul>
+
+
+
+        </div>
+
+        
+
+
+
+    </div><!--wrap-->

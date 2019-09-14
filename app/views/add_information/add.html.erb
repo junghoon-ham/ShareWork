@@ -1,0 +1,154 @@
+
+ 
+ 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="//code.jquery.com/jquery.min.js"></script>
+
+
+<div id="wrap" style="text-align:center;">
+  
+
+
+<div id="top_title2">회원 정보 수정</div>
+
+
+  <div class="form_wrap gray form_mg_30">
+    
+  <form action= "/add_information/update/<%= current_user.id %>" method="post">
+  
+  
+    <label for="email">이메일</label>
+    <input type="text" name="email" value="<%= current_user.email %>" placeholder="이메일" class="frm_default"/>
+
+    <label for="name">이름</label>
+    <input type="text" name="name" value="<%= current_user.name %>"placeholder="이름" class="frm_default"/><br/>
+    
+    
+    
+    <label for="bankName">은행</label>
+    <select name='bankName' class="frm_default">
+      <option value=''>-선택-</option>
+       <option value='SC제일은행'>SC제일은행</option>
+       <option value='경남은행'>경남은행</option>
+       <option value='광주은행'>광주은행</option>
+       <option value='국민은행'>국민은행</option>
+       <option value='굿모닝신한증권'>굿모닝신한증권</option>
+       <option value='기업은행'>기업은행</option>
+       <option value='농협중앙회'>농협중앙회</option>
+       <option value='농협회원조합'>농협회원조합</option>
+       <option value='대구은행'>대구은행</option>
+       <option value='대신증권'>대신증권</option>
+       <option value='대우증권'>대우증권</option>
+       <option value='동부증권'>동부증권</option>
+       <option value='동양종합금융증권'>동양종합금융증권</option>
+       <option value='메리츠증권'>메리츠증권</option>
+       <option value='미래에셋증권'>미래에셋증권</option>
+       <option value='뱅크오브아메리카(BOA)'>뱅크오브아메리카(BOA)</option>
+       <option value='부국증권'>부국증권</option>
+       <option value='부산은행'>부산은행</option>
+       <option value='산림조합중앙회'>산림조합중앙회</option>
+       <option value='산업은행'>산업은행</option>
+       <option value='삼성증권'>삼성증권</option>
+       <option value='상호신용금고'>상호신용금고</option>
+       <option value='새마을금고'>새마을금고</option>
+       <option value='수출입은행'>수출입은행</option>
+       <option value='수협중앙회'>수협중앙회</option>
+       <option value='신영증권'>신영증권</option>
+       <option value='신한은행'>신한은행</option>
+       <option value='신협중앙회'>신협중앙회</option>
+       <option value='에스케이증권'>에스케이증권</option>
+       <option value='에이치엠씨투자증권'>에이치엠씨투자증권</option>
+       <option value='엔에이치투자증권'>엔에이치투자증권</option>
+       <option value='엘아이지투자증권'>엘아이지투자증권</option>
+       <option value='외환은행'>외환은행</option>
+       <option value='우리은행'>우리은행</option>
+       <option value='우리투자증권'>우리투자증권</option>
+       <option value='우체국'>우체국</option>
+       <option value='유진투자증권'>유진투자증권</option>
+       <option value='전북은행'>전북은행</option>
+       <option value='제주은행'>제주은행</option>
+       <option value='키움증권'>키움증권</option>
+       <option value='하나대투증권'>하나대투증권</option>
+       <option value='하나은행'>하나은행</option>
+       <option value='하이투자증권'>하이투자증권</option>
+       <option value='한국씨티은행'>한국씨티은행</option>
+       <option value='한국투자증권'>한국투자증권</option>
+       <option value='한화증권'>한화증권</option>
+       <option value='현대증권'>현대증권</option>
+       <option value='홍콩상하이은행'>홍콩상하이은행</option>
+      </select>
+      <br/>
+      
+    <label for="bankName">계좌번호</label>
+    <input type="text" name = "accountNum" placeholder = "계좌번호"  class="frm_default" /><br/>
+   
+   
+   <label for="phone">핸드폰번호</label>
+   <input type="text" name="phone" placeholder="핸드폰 번호" value="<%=current_user.phone%>" class="frm_default"/><br/>
+  
+  
+  <label for="address">주소</label><br>
+  <input type="text" name="address1"  id= "sample5_address" value="<%= current_user.address1%>" placeholder="주소" class="frm_default" style="width:80%;"/>
+    <input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색" style="width:20%;border:0;float:right;backgroud:#000 !important;line-height:50px;color:#fff;"><br>
+    <input type="text" name="address2" value="<%= current_user.address2%>" placeholder="상세주소" class="frm_default"/>
+    <div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div><br/>
+    
+    <input type="submit" value="입력"/>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    
+    
+    </div>
+</form>
+
+<script src="https://spi.maps.daum.net/imap/map_js_init/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=be0c46214d2670f3e69a09c08a859260&libraries=services"></script>
+<script>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+            level: 5 // 지도의 확대 레벨
+        };
+
+    //지도를 미리 생성
+    var map = new daum.maps.Map(mapContainer, mapOption);
+    //주소-좌표 변환 객체를 생성
+    var geocoder = new daum.maps.services.Geocoder();
+    //마커를 미리 생성
+    var marker = new daum.maps.Marker({
+        position: new daum.maps.LatLng(37.537187, 127.005476),
+        map: map
+    });
+
+
+    function sample5_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = data.address; // 최종 주소 변수
+
+                // 주소 정보를 해당 필드에 넣는다.
+                document.getElementById("sample5_address").value = addr;
+                // 주소로 상세 정보를 검색
+                geocoder.addressSearch(data.address, function(results, status) {
+                    // 정상적으로 검색이 완료됐으면
+                    if (status === daum.maps.services.Status.OK) {
+
+                        var result = results[0]; //첫번째 결과의 값을 활용
+
+                        // 해당 주소에 대한 좌표를 받아서
+                        var coords = new daum.maps.LatLng(result.y, result.x);
+                        // 지도를 보여준다.
+                        mapContainer.style.display = "block";
+                        map.relayout();
+                        // 지도 중심을 변경한다.
+                        map.setCenter(coords);
+                        // 마커를 결과값으로 받은 위치로 옮긴다.
+                        marker.setPosition(coords)
+                    }
+                });
+            }
+        }).open();
+    }
+</script>
+
+
+</div>

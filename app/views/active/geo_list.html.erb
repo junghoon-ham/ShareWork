@@ -1,0 +1,134 @@
+<script>
+  var job = <%= raw @job %>;
+  var y = '<%= @y %>';
+  var x = '<%= @x %>';
+  
+  var data = [];
+    
+  $(function(){
+    var length = job.length;
+    var newRowData;
+    for(var i = 0; i < length; i++) {
+      newRowData = {
+        id: job[i].id,
+        bs_address: job[i].bs_address,
+        bs_name: job[i].bs_name,
+        time_start: job[i].time_start,
+        time_end: job[i].time_end,
+        pay: job[i].pay,
+        y: job[i].y,
+        x: job[i].x,
+        distance: calcDistance(y, x, job[i].y, job[i].x),
+        realdistance: realDistance(y, x, job[i].y, job[i].x),
+        date: job[i].date,
+        address: job[i].address
+      }
+      
+      data.push(newRowData);
+    }
+    
+    data.sort(function(a, b) { // 오름차순
+        return a["realdistance"] - b["realdistance"];
+    });
+    
+    gridList(data);
+    
+    $(document).on('click','.btn_apply', function(){
+      var id = $(this).data('id');
+      location.href = "/active/create_application?id=" + id;
+    });
+  });
+  
+  function calcDistance(lat1, lon1, lat2, lon2){
+      var EARTH_R, Rad, radLat1, radLat2, radDist; 
+      var distance, ret;
+      EARTH_R = 6371000.0;
+      Rad 		= Math.PI/180;
+      radLat1 = Rad * lat1;
+      radLat2 = Rad * lat2;
+      radDist = Rad * (lon1 - lon2);
+      distance = Math.sin(radLat1) * Math.sin(radLat2);
+      distance = distance + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radDist);
+      ret 		 = EARTH_R * Math.acos(distance);
+      var rtn = Math.round(Math.round(ret) / 1000);
+     	if(rtn <= 0)
+     	{
+     		rtn = Math.round(ret) + " m";
+     	}else
+     	{
+     		rtn = rtn + " km";
+     	}
+      return  rtn;
+  }
+  
+  function realDistance(lat1, lon1, lat2, lon2){
+      var EARTH_R, Rad, radLat1, radLat2, radDist; 
+      var distance, ret;
+      EARTH_R = 6371000.0;
+      Rad 		= Math.PI/180;
+      radLat1 = Rad * lat1;
+      radLat2 = Rad * lat2;
+      radDist = Rad * (lon1 - lon2);
+      distance = Math.sin(radLat1) * Math.sin(radLat2);
+      distance = distance + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radDist);
+      ret 		 = EARTH_R * Math.acos(distance);
+      
+      return  ret;
+  }
+  
+  function gridList(data) {
+      $(".work_list").empty();
+          
+          for(var i = 0; i < data.length; i++) {
+              var li$ = $('<li>');
+              $('<section>').append(
+                $('<a>').addClass('icon_fav').append(
+                  $('<i>').addClass('far fa-star')
+                ),
+                $('<div>').addClass('img').append(
+                  $('<img>').attr('src', 'https://www.menupan.com/restaurant/restimg/000/zzmenuimg/h3024404_z.jpg')
+                ),
+                $('<div>').addClass('info').append(
+                  $('<div>').addClass('title').text(data[i].bs_name + ' ').append(
+                    $('<span>').text(data[i].address),
+                    $('<span>').addClass('loc').text(data[i].distance)
+                  ),
+                  $('<a>').addClass('tag').text('#주방 보조'),
+                  $('<a>').addClass('tag').text('#서빙'),
+                  $('<a>').addClass('tag').text('#배달')
+                )
+              ).appendTo(li$);
+              
+              $('<ul>').addClass('info2').append(
+                $('<li>').text(data[i].date),
+                $('<li>').text(data[i].time_start + '시 ~ ' + data[i].time_end + '시'),
+                $('<li>').text('시급 ' + data[i].pay + '원').append(
+                  $('<span>').addClass('icon-blue').text('당일지급')
+                )
+              ).appendTo(li$);
+              
+              $('<span>').addClass('btn_apply').text('바로지원').data('id', data[i].id).append(
+                $('<i>').addClass('fas fa-chevron-right')  
+              ).appendTo(li$);
+              
+              $('.work_list').append(li$);
+          }
+  }
+</script>
+
+<div id="wrap"><!--wrap-->
+  <div id="container" class="recm">
+
+            <h5>이 알바는 어때요?</h5>
+            <i class="fas fa-sort-amount-down"></i>
+            <ul class="work_list">
+  
+            </ul>
+
+
+
+
+        </div>
+</div>
+
+

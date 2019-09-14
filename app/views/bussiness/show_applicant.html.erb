@@ -1,0 +1,14 @@
+<script>
+  $(function(){
+    
+  });
+</script>
+
+지원자 <br />
+<% @application.each do |application| %>
+  <div class="application_list" data-id=<%= application.id %> style="border: 1px solid gray">
+      이름 : <%= application.name %> <br />
+      주소 : <%= application.address1 %> <br />
+      전화번호 : <%= application.phone %> <br />
+  </div>
+<% end %>

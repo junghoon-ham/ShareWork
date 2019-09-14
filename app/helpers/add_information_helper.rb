@@ -1,0 +1,2 @@
+module AddInformationHelper
+end
