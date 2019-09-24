@@ -29,7 +29,108 @@
         cursor: pointer;
       }
     </style>
+
     
+    <div id="wrap"><!--wrap-->
+
+
+        <div id="maparea">
+          <div id="sch">
+                <input type="text" placeholder="어느지역에서 일하고 싶으세요?">
+                <span class="favorites" id="currentLocation"></span> 
+            </div>
+
+            <div class="map_wrap">
+              
+              
+            <div id="map"style="width:50%; height:70%;"></div>
+      
+            <!--즐찾버튼-->
+            <div id="fav">
+                <% if @favorites != nil %>
+                  <% @count = 0 %>
+                  <% while @count < @favorites.length %>
+                    <span class="favorites btn_fav2" id="favorites_<%= @count %>"></span> <br />
+                    <input type="hidden" id="favorites_y_<%= @count %>" value=<%= @favorites[@count].y %>>
+                    <input type="hidden" id="favorites_x_<%= @count %>" value=<%= @favorites[@count].x %>>
+                    <% @count = @count + 1 %>
+                  <% end %>
+                <% end %>
+            </div>
+            <!--즐찾버튼-->
+    </div>
+
+        </div>
+        <div id="stick-here"></div>
+        <div id="container" class="recm" style="margin-top:450px;background:#fff;">
+
+            <h5>이 알바는 어때요?</h5>
+            
+<div style="float:right;">
+   <select>
+              <option>최신순</option>
+              <option>거리순</option>
+              <option>가격순</option>
+            </select>
+            
+            <button>당일지급</button>
+  
+  
+</div>           
+            
+            
+            <ul class="work_list">
+              
+            </ul>
+
+
+
+
+        </div>
+
+
+
+        
+        
+
+
+
+    </div><!--wrap-->
+    
+    
+    
+<style>
+.stick {
+    margin-top: 0;
+    position: fixed;
+    top: 0;
+    margin-top:0 !important;
+
+}
+</style>
+    
+    
+
+        
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+<!--<script>
+function sticktothetop() {
+    var window_top = $(window).scrollTop();
+
+    if (window_top > 200) {
+        $('.recm').addClass('stick');
+    } else {
+        $('.recm').removeClass('stick');
+    }
+}
+$(function() {
+    $(window).scroll(sticktothetop);
+    sticktothetop();
+});
+</script>-->
+
+
+
     <script>
       var map, infoWindow;
       var markers, marker;
@@ -38,7 +139,7 @@
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -34.397, lng: 150.644},
-          zoom: 12,
+          zoom: 15,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           panControl: true,
           zoomControl: false,
@@ -365,59 +466,3 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7hFvqWN9sgQerWvWN7UTkRYI2yfKtlnk&callback=initMap&libraries=geometry,places">
     </script> 
-    
-    <div id="wrap"><!--wrap-->
-
-
-        <div id="maparea">
-          <div id="sch">
-                <input type="text" placeholder="어느지역에서 일하고 싶으세요?">
-                <span class="favorites" id="currentLocation"></span> 
-            </div>
-
-            <div class="map_wrap">
-              
-              
-            <div id="map"style="width:50%; height:70%;"></div>
-      
-            <!--즐찾버튼-->
-            <div id="fav">
-                <% if @favorites != nil %>
-                  <% @count = 0 %>
-                  <% while @count < @favorites.length %>
-                    <span class="favorites btn_fav2" id="favorites_<%= @count %>"></span> <br />
-                    <input type="hidden" id="favorites_y_<%= @count %>" value=<%= @favorites[@count].y %>>
-                    <input type="hidden" id="favorites_x_<%= @count %>" value=<%= @favorites[@count].x %>>
-                    <% @count = @count + 1 %>
-                  <% end %>
-                <% end %>
-            </div>
-            <!--즐찾버튼-->
-    </div>
-
-        </div>
-
-        <div id="container" class="recm">
-
-            <h5>이 알바는 어때요?</h5>
-            <i class="fas fa-sort-amount-down"></i>
-            <ul class="work_list">
-              
-            </ul>
-
-
-
-
-        </div>
-
-
-
-        
-        
-
-
-
-    </div><!--wrap-->
-    
-    
-    

@@ -21,54 +21,132 @@
   });
 </script>
 
-<div id="wrap">
-  <span id="location" style="border: 1px solid blue; cursor: pointer;">사업장 등록</span><br />
-  <span id="create_job" style="border: 1px solid blue; cursor: pointer;">구인글 등록</span><br /><br />
+<div id="wrap" class="bs_profile">
   
-  선택된 사업장<br />
-  <% if @bussiness != nil %>
-    <div style="border: 1px solid gray">
-        <%= @bussiness.bs_name %><br />
-        <%= @bussiness.address %><br />
-        <a href="/bussiness/change_bs">사업장 변경</a>
-    </div>
-  <% else %>
-    <br />
-    사업장을 등록해주세요. <br />
-  <% end %>
-  <br />
   
-  등록된 일자리
-  <% if @job != nil %>
-    <ul class="work_list">
-      <% @job.each do |job| %>
-          <li class="job_list" data-id=<%= job.id %>> 
-              <section>
-                  <a href="#" class="icon_fav"></a>
-                  <div class="img"></div>
-                  <div class="info">
-                      <div class="title"><%= job.bs_name %> <span><%= job.address %></span></div>
-                      <a href="#" class="tag">#바리스타</a>
-                      <a href="#" class="tag">#서빙</a>
-                      <a href="#" class="tag">#당일지급</a>
-                  </div>
-              </section>
+  <div id="profile">
+            <div class="pull-left col-md-3">
+                
+                <div class="profile_thumb">
+                    <div class="btn_upload"><i class="fas fa-camera"></i></div>
+                    <div class="img"><img src="http://www.cheogajip.co.kr/data/file/menu/thumb-32732614_IS24EQVA_678ab6e730f0dcc0649094f5a519801ae6926956_290x297.png" ></div>
+               </div>
+            
+            </div>
+            <div class="pull-right col-md-9">
+              
+              <% if @bussiness != nil %>
+                    <span class="name"><%= @bussiness.bs_name %></span>
+                    &nbsp;&nbsp;<a href="/bussiness/change_bs" title="사업장변경"><i class="fas fa-chevron-down"></i></a>
+                    <br>
+                    <%= @bussiness.address %><br>02-123-4567
+                    <% else %>
+                <br>
+                사업장을 등록해주세요. <br />
+              <% end %>
+              
 
-              <ul class="info2">
-              <li><%= job.date %></li>
-              <li><%= job.time_start %>시 ~ <%= job.time_end %>시</li>
-              <li>시급 <%= job.pay %>원 <span class="icon-blue">당일지급</span></li>
-              <li>지원자 <%= job.personnel_cnt %> / <%= job.personnel %></li>
-              </ul>
-          </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <br />
-    등록된 일자리가 없습니다.
-  <% end %>
+              <div class="btn_area">
+              <span id="location">사업장 추가</span>
+              </div>
+            </div>
+            
+            
+              <button id="create_job"><i class="fas fa-edit"></i> 구인글 등록</button>
+
+        </div>
+
+
+
+
   
-  <% if @bussiness != nil %>
-    <input type="hidden" id="bussiness" value=<%= @bussiness.id %>>
-  <% end %>
+
+
+      <ul class="tabs">
+          <li class="active" rel="tab1">진행중 <div>4</div></li>
+          <li rel="tab2">마감 <div>10</div></li>
+
+      </ul>
+
+<div id="container" class="tab_container">
+
+          <!-- #tab1 : 지원중 -->
+          <div id="tab1" class="tab_content">
+
+          <% if @job != nil %>
+            <ul class="work_list">
+              <% @job.each do |job| %>
+                  <li class="job_list" data-id=<%= job.id %>> 
+                      <section>
+                          <a href="#" class="icon_fav"></a>
+                          <div class="img"></div>
+                          <div class="info">
+                              <div class="title"><%= job.bs_name %> <span><%= job.address %></span></div>
+                              <a href="#" class="tag">#바리스타</a>
+                              <a href="#" class="tag">#서빙</a>
+                              <a href="#" class="tag">#당일지급</a>
+                          </div>
+                      </section>
+        
+                      <ul class="info2">
+                      <li><%= job.date %></li>
+                      <li><%= job.time_start %>시 ~ <%= job.time_end %>시</li>
+                      <li>시급 <%= job.pay %>원 <span class="icon-blue">당일지급</span></li>
+                      </ul>
+                       
+                      <ul class="info3">
+                      <li><i class="fas fa-user"></i> 지원자 <%= job.personnel_cnt %> / <%= job.personnel %></li>
+                      <li><i class="fas fa-sync-alt"></i> 재등록하기</li>
+                      </ul>     
+                      
+                  </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <br />
+            등록된 일자리가 없습니다.
+          <% end %>
+          
+          <% if @bussiness != nil %>
+            <input type="hidden" id="bussiness" value=<%= @bussiness.id %>>
+          <% end %>
+            
+
+          </div>
+
+          
+
+          <div id="tab2" class="tab_content">
+
+
+
+
+          </div>
+
+
+      </div>
+      
+      
+      
+
+
+
+
 </div>
+
+
+  <script>
+    $(function () {
+    
+      $(".tab_content").hide();
+      $(".tab_content:first").show();
+      
+      $("ul.tabs li").click(function () {
+      $("ul.tabs li").removeClass("active").css("color", "#8a8a8a");
+      $(this).addClass("active").css("color", "#82d7d2");
+      $(".tab_content").hide()
+      var activeTab = $(this).attr("rel");
+      $("#" + activeTab).fadeIn()
+      });
+    });
+		</script>

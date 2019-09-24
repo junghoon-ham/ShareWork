@@ -1,15 +1,23 @@
 <style>
     .sort, .select {
-        border: 1px solid gray;
-        border-radius: 7px;
-        margin-left: 7px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        padding:1px 5px;
+        color:#666;
         cursor: pointer;
+        margin-right:5px;
+        text-align:center;
+        font-weight:500;
     }
     
     #select {
-        border: 1px solid gray;
-        height: 50px;
+        min-height: 80px;
+        margin-top:20px;
+        
     }
+    
+    
+    #select .select {background:#85d5d5;color:#fff;border:1px solid #85d5d5}
 </style>
 
 <script>
@@ -43,6 +51,10 @@
 <script>
     var selectList = [];
     $(function(){
+        
+      $('#menu').remove();
+      
+      
        $('.sort').on('click', function(){
            var selectSort = {};
            var sort = $(this).data('sort');
@@ -112,12 +124,18 @@
     }
 </script>
 
+
+<div id="wrap" class="create_job">
+<div id="top_title2"><i class="fas fa-chevron-left" onClick="history.back();"></i> 구인등록</div>
 <form method="post" name="writeForm" action="/bussiness/createJob">
-    <div>
-        언제 일을 하나요?<br />
-        <input class="datepicker" name="date"><br />
+    
+    
+  <div id="container" class="form_wrap gray">
+
+        <label for="datepicker">언제 일을 하나요?</label><br />
+        <input class="datepicker frm_default" name="date"><br />
         
-        <select name="time_start">
+        <select name="time_start" class="frm_default" style="width:130px;">
             <option value="0">오전 12:00</option>
             <option value="1">오전 01:00</option>
             <option value="2">오전 02:00</option>
@@ -144,7 +162,7 @@
             <option value="23">오후 11:00</option>
             <option value="24">오후 12:00</option>
         </select> ~ 
-        <select name="time_end">
+        <select name="time_end" class="frm_default" style="width:130px;">
             <option value="0">오전 12:00</option>
             <option value="1">오전 01:00</option>
             <option value="2">오전 02:00</option>
@@ -171,11 +189,10 @@
             <option value="23">오후 11:00</option>
             <option value="24">오후 12:00</option>
         </select>
-    </div><br />
-    
-    <div>
-        몇명이 필요하세요?<br />
-        <select name="personnel">
+
+
+        <label for="personnel"> 몇명이 필요하세요?</label>
+        <select name="personnel" class="frm_default">
             <option value="1">1명</option>
             <option value="2">2명</option>
             <option value="3">3명</option>
@@ -187,12 +204,19 @@
             <option value="9">9명</option>
             <option value="10">10명</option>
         </select>
-    </div><br />
+
+
+
     
-    <div>
-        임금을 정해주세요<br />
-        <input type='text' name="pay">원
-    </div><br />
+     <label for="pay"> 임금을 정해주세요.</label>
+        시급<input type='text' name="pay" class="frm_default" style="width:90%;">원
+
+     <label for="pay"> 당일지급체크</label>
+      <input type='checkbox'> 당일지급
+
+
+    
+    
     <!-- 
     <h4>특정매장</h4>
     <% @lib_tag.each do |t| %>
@@ -255,7 +279,9 @@
     <hr/>
     -->
     
-    <h4>직종</h4>
+    <br style="clear:both;">
+    
+    <label for="pay"> 직종</label>
     <% @lib_tag.each do |t| %>
         <% if t.sectors == "duty" %>
             <span class="sort" data-id=<%= t.id %> data-sort=<%= t.sort %>>
@@ -263,9 +289,10 @@
             </span>
         <% end %>
     <% end %>
-    <hr/>
+
+    <br style="clear:both;">
     
-    <h4>직무</h4>
+    <label for="pay"> 직무</label>
     <% @lib_tag.each do |t| %>
         <% if t.sectors == "occupations" %>
             <span class="sort" data-id=<%= t.id %> data-sort=<%= t.sort %>>
@@ -273,15 +300,15 @@
             </span>
         <% end %>
     <% end %>
-    <hr/>
-    
-    
+
+    <br style="clear:both;">
     <div id="select"></div>
     
-    <div>
-        상세설명<br />
-        <textarea name="etc"></textarea>
-    </div><br />
+    <br style="clear:both;">
+    <label for="etc"> 상세설명</label>
+    <textarea name="etc" class="frm_default"></textarea>
+
+
     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
     <input type="hidden" name="bussiness_id" value=<%= @bussiness.id %>>
     <input type="hidden" name="bs_name" value=<%= @bussiness.bs_name %>>
@@ -290,8 +317,16 @@
     <input type="hidden" name="y" value=<%= @bussiness.y %>>
     <input type="hidden" name="x" value=<%= @bussiness.x %>>
     <input type="hidden" name="data">
+    
+
+    
+    </div>
 </form>
 
+    
+    <input type="button" value="저장" id="save" class="btn_apply">
 
 
-<input type="button" value="저장" id="save" style="margin-top: 30px;"/>
+
+
+</div>

@@ -1,8 +1,9 @@
 <script>
     $(function(){
+       $('#menu').remove();
         var id = '';
         
-      $(document).on("click","#bsList div",function(){ 
+      $(document).on("click","#bsList li",function(){ 
           $('.select').removeClass();
           $(this).addClass('select');
           
@@ -24,32 +25,40 @@
     });
 </script>
 
-<style>
-    .select {
-        background-color: #C7D3ED;
-    }
-</style>
+<div id="wrap" class="st_info">
+<div id="top_title2"><i class="fas fa-chevron-left" onClick="history.back();"></i> 사업장변경</div>
 
 <div id="bsList">
-    <% @bussiness.each do |bussiness| %>
-        <% if bussiness.state == 'Y' %>
-            <div style="border: 1px solid gray" class="select" data-id=<%= bussiness.id %>>
-                <%= bussiness.bs_name %><br />
-                <%= bussiness.address %><br />
-            </div>
-        <% else %>
-            <div style="border: 1px solid gray" data-id=<%= bussiness.id %>>
-                <%= bussiness.bs_name %><br />
-                <%= bussiness.address %><br />
-            </div>
-        <% end %>
-    <% end %>
+    <ul>
+          <% @bussiness.each do |bussiness| %>
+                <% if bussiness.state == 'Y' %>
+                <li class="select" data-id=<%= bussiness.id %>>
+                    <b><%= bussiness.bs_name %></b><br>
+                    <%= bussiness.address %>
+                    <i class="far fa-check-circle"></i>
+                </li>
+                <% else %>
+                <li data-id=<%= bussiness.id %>>
+                    <b><%= bussiness.bs_name %></b><br>
+                    <%= bussiness.address %>
+                    <i class="far fa-check-circle"></i>
+                </li>
+                <% end %>
+          <% end %>  
+            <li class="new" onclick="location.href='/bussiness/location'">
+                <i class="fas fa-plus"></i> <b>신규추가</b>
+            </li>
+    
+      </ul>
 </div>
 
-<span id="btn_save" style="border: 1px solid blue; cursor: pointer;">변경 완료</span>
+<div id="btn_save" class="btn_apply">변경 완료</div>
 
 
 <form method="post" name="changeform" action="/bussiness/change"> 
     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
     <input type="hidden" id="id" name="id"> 
 </form> 
+
+
+</div>

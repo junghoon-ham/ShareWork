@@ -29,7 +29,7 @@ pre {overflow-x:scroll;font-size:1.1em}
 a:link, a:visited {color:#000;text-decoration:none}
 a:hover, a:focus, a:active {color:#000;}
 
-a,div,p,span,input,button,select,ul,li {-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+a,div,p,span,input,button,select,ul,li,textarea {-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
 img {max-width:100%;}
 
 div, ul, li {display:inline-block;*display:inline;}
@@ -40,6 +40,18 @@ div, ul, li {display:inline-block;*display:inline;}
 .mg-top-30 {margin-top:30px;}
 .center {text-align:center}
 .left {text-align:left;}
+.pull-left {float:left;}
+.pull-right {float:right;}
+
+
+.col-md-2 {float:left;width:16.666%}
+.col-md-3 {float:left;width:25%}
+.col-md-4 {float:left;width:33.333%}
+.col-md-5 {float:left;width:41.666%}
+.col-md-6 {float:left;width:50%}
+.col-md-7 {float:left;width:58.333%}
+.col-md-8 {float:left;width:66.6666%}
+.col-md-9 {float:left;width:75%}
 
 /*form*/
 
@@ -69,7 +81,8 @@ input[type=submit] {-webkit-appearance:none;}
 
 
 #top_title2 {position:relative;float:left;width:100%;height:60px;line-height:60px;background:#85d5d5;font-weight:500;font-size:15pt;color:#fff;padding:0 20px;}
-
+#top_title2 i {margin-right:10px;}
+#top_title2 i:hover {cursor:pointer;}
 
 #wrap {position:relative;width:100%;max-width:500px;margin:0 auto;background:#fff;text-align:left;
     padding-bottom:50px;min-height:800px}
@@ -82,7 +95,7 @@ input[type=submit] {-webkit-appearance:none;}
 .index .logo {max-width:280px;margin:0 auto 10px auto;}
 
 
-.form_wrap {position:relative;width:90%;padding:0;clear:both;}
+.form_wrap {position:relative;width:100%;padding:0;clear:both;}
 .form_mg {margin:80px auto;}
 .form_mg_30 {margin:30px auto;}
 
@@ -95,8 +108,7 @@ input[type=submit] {-webkit-appearance:none;}
 .frm_fa {padding-left:50px;}
 
 
-.frm_default {position:relative;border:0;border-bottom:1px solid #fff;background:transparent;
-width:100%;height:50px;line-height:50px;margin-bottom:8px;color:#fff !important;}
+.frm_default {position:relative;border:0;border-bottom:1px solid #fff;background:transparent;width:100%;height:50px;line-height:50px;margin-bottom:8px;color:#fff !important;}
 
 .form_wrap.gray .frm_default {border:1px solid #ddd;color:#888 !important;padding-left:10px;}
 .form_wrap.gray input::placeholder {color: #888;}
@@ -114,6 +126,8 @@ width:100%;height:50px;line-height:50px;margin-bottom:8px;color:#fff !important;
 }
 
 .frm_email {padding-left:35px;}
+
+textarea.frm_default {height:100px;}
 
 
 .agree {position:relative;float:left;width:100%;padding:0;margin:0;}
@@ -143,7 +157,14 @@ border:0;border-radius:3px;padding-left:30px ;
 #sch button {box-shadow:0px 3px 5px rgba(0,0,0,0.3);}
 
 #sch input[type=text] {width:calc(100% - 55px);border:1px solid #91d0cd;background:#fff;height:45px;line-height:45px;border-radius:3px;padding-left:50px;background:url('/img/icon_search.png') #fff no-repeat 15px center;background-size:20px auto;}
+
 #sch span {float:right;border:1px solid #91d0cd;background:#fff;width:45px;height:45px;line-height:45px;border-radius:3px;background:url('/img/icon_mylocation.png') #fff no-repeat center center;background-size:20px auto;}
+
+
+/*[업주] 업체검색*/
+.sch_store input[type=text] {width:calc(100% - 100px) !important;}
+.sch_store button {background:#85d5d5;border:0;color:#fff;line-height:45px;
+float:right;width:90px;font-weight:500;border-radius:3px;}
 
 
 /*즐찾장소버튼*/
@@ -163,7 +184,7 @@ box-shadow:0px 3px 5px rgba(0,0,0,0.3);}
 .recm h5 {display:inline-block;*display:inline;float:left;padding:0;margin:0;}
 .recm .fa-sort-amount-down {float:right;font-size:12pt;color:#b0b0b0;margin-top:8px;}
         
-.work_list {position:relative;padding:0;margin:15px 0;display:inline-block;*display:inline;}
+.work_list {position:relative;padding:0;margin:0 0 15px 0;display:inline-block;*display:inline;}
 .work_list > li {position:relative;padding:15px;margin:0;width:100%;list-style:none;border:1px solid #82d7d2;border-radius:5px;box-shadow:3px 3px 3px #ddf4f3;margin-bottom:15px;}
 .work_list > li:hover {cursor:pointer;box-shadow:3px 3px 3px #cde9e8;background:#f1fffe;}
 
@@ -187,17 +208,58 @@ a.tag:hover {background:#e9f7ff;border-radius:3px;}
 .work_list .info2 li:nth-child(2) {background:url('/img/icon_time.png') no-repeat left center;background-size:15px auto;}
 .work_list .info2 li:nth-child(3) {background:url('/img/icon_pay.png') no-repeat left center;background-size:15px auto;}
 
+
+
+.job_list {padding:15px 15px 0 15px !important;}
+.job_list .info3 {position:relative;width:100%;padding:10px 0 0 0;margin:0;}
+.job_list .info3 li {border-top:1px solid #ddd;padding:0 0 0 0;margin:0;float:left;width:50%;list-style:none;display:inline-block;*display:inline;color:#8a8a8a;font-size:12pt;line-height:45px;text-align:center;}
+.job_list .info3 li:first-child {border-right:1px solid #ddd;}
+
+
+
 span.icon-blue {background:#004eb7;color:#fff;font-size:8.5pt;border-radius:8px;padding:0 5px;}
 
 .icon_fav {position:absolute;top:0px;right:5px;}
 .icon_fav i {color:#b0b0b0;}
+
 .btn_apply {position:absolute;bottom:15px;right:15px;background:linear-gradient( to right, #82d7d2, #77c2ec);color:#fff !important;font-size:12pt;
 font-weight:500;padding:10px 20px 10px 30px;border-radius:50px;}
 .btn_apply i {margin-left:10px;}
 
-
-
 #graybar {position:relative;width:100%;float:left;background:#f9f9f9;height:8px}
+
+
+
+/*업체정보*/
+.st_info .st_top {position:relative;width:100%;padding:15px;}
+.st_info .st_top .img {position:relative;float:left;background:#ddd;width:60px;height:60px;border-radius:50%;overflow:hidden;}
+.st_info .st_top .img img {position:absolute;left:0;top:0;min-height:100%;width:auto !important;}
+.st_info .st_top .info {float:left;width:100%;max-width:300px;padding:5px 0 0 15px;}
+.st_info .st_top .title {font-size:13pt;font-weight:500;width:100%;margin-bottom:2px;}
+.st_info .st_top .title span {margin-left:8px;font-weight:400;font-size:10pt;color:#8a8a8a}
+
+.st_info .st_top .title span.loc:before {position:absolute;content:"|";left:0;top:-1px;}
+.st_info .st_top .title span.loc {position:relative;background:url('/img/icon_location.png') 12px center no-repeat;background-size:10px auto;padding-left:27px;}
+
+.st_info .st_top .icon_fav {top:15px;right:15px;}
+
+.st_info .st_content {position:relative;float:left;width:100%;padding:0;margin:0;}
+.st_info .st_content table {border-collapse:collapse;width:100%;}
+.st_info .st_content table th,
+.st_info .st_content table td {border-bottom:1px solid #ddd;padding:15px;}
+.st_info .st_content table th {width:100px;text-align:left;font-weight:500;padding-left:20px;}
+.st_info .st_content table td {}
+
+.st_info .st_content iframe {margin-top:10px;}
+
+.mb_modify .btn_apply,
+.st_info .btn_apply,
+.create_job .btn_apply {position:fixed;background:#4FC9DE;height:55px;left:0;bottom:0;text-align:center;width:100%;border:0;max-width:500px;margin:0 auto;bottom: 0; left: 0; right: 0;border-radius:0;line-height:55px;padding:0;font-size:13pt;z-index:99;}
+
+
+.st_info .btn_apply:hover {cursor:pointer;}
+.st_info .total {color:#fff;background:#82d7d2;padding:2px 10px;border-radius:20px;font-size:10pt;}
+
 
 
 /*하단 메뉴*/
@@ -237,30 +299,73 @@ ul.tabs li div {position:relative;width:23px;height:23px;background:#8a8a8a;colo
 
 ul.tabs li.active div {background:#82d7d2;}
 
-.tab_container { width:100%; }
-.tab_content { width:100% }
+.tab_container { width:100%; padding:0;margin:0;}
+.tab_content { width:100%;padding:0 !important;margin:0;}
 
 
-/*마이페이지 */
+/*마이페이지 (알바생, 업주)*/
 #profile {position:relative;width:100%;background:#85d5d5;color:#fff;padding:30px;}
 
-#profile .profile_thumb {position:relative;width:85px;height:85px;}
-#profile .img {width:85px;height:85px;border-radius:50%;overflow:hidden;}
-#profile .btn_upload {position:absolute;z-index:999;bottom:0px;right:0px;color:#fff;text-align:center;background:#626262;width:30px;height:30px;border:2px solid #fff;border-radius:50%;}
+.profile_thumb {position:relative;width:85px;height:85px;}
+.profile_thumb .img {width:85px;height:85px;border-radius:50%;overflow:hidden;}
+.profile_thumb .btn_upload {position:absolute;z-index:999;bottom:0px;right:0px;color:#fff;text-align:center;background:#626262;width:30px;height:30px;border:2px solid #fff;border-radius:50%;}
 
 #profile .pull-right {padding-left:20px;}
+#profile a i {color:#fff;}
 
 .name {font-size:15pt;}
 .certi {border:1px solid #fffa7f;color:#fffa7f;padding:1px 5px;border-radius:20px;}
 
 .btn_modify {border:0;position:absolute;right:20px;top:40px;width:30px;height:30px;background:url('/img/icon_setting.png') no-repeat center center; background-size:30px auto;}
 
+#profile  .btn_area {position:absolute;top:0;right:0;}
+#profile  .btn_area span {}
+
+
 
 /*메뉴리스트 */
 
 #list_menu {}
-#list_menu ul {position:relative;float:left;width:100%;padding:0;margin:0;}
-#list_menu li {position:relative;float:left;width:100% !important;height:55px;line-height:55px;
-    color:#333;border-bottom:1px solid #ddd;padding:0 0 0 30px;}
+#list_menu > ul {position:relative;float:left;width:100%;padding:0;margin:0;}
+#list_menu > ul > li {position:relative;float:left;width:100% !important;height:55px;line-height:55px;color:#333;border-bottom:1px solid #ddd;padding:0 30px;font-weight:500;}
+#list_menu > ul > li:nth-child(2) {height:auto;}    
+    
     
 #list_menu li.arrow {background:url('/img/icon_arrow.png') no-repeat 95% center;background-size:10px auto;}
+
+#submenu {position:relative;float:left;width:100%;max-width:100%;padding:0;margin:15px 0;line-height:30px;}
+#submenu li {position:relative;width:100%;list-style:none;margin:0;padding:0;line-height:35px;color:#666;font-weight:400;}
+#submenu li div {float:right;margin-top:5px;}
+#submenu li i {margin-right:10px;}
+
+
+
+/*업주 - 내가게 */
+
+.bs_profile #profile {padding-bottom:20px;}
+#create_job {border-radius:5px;background:#004eb7;width:100%;height:50px;line-height:50px;border:0;color:#fff;font-weight:500;font-size:12pt;margin-top:10px;}
+#create_job i {margin-right:10px;}
+
+
+/*업주 - 공고 상세보기 */
+.ap_wrap {position:relative;width:100%;background:#f7f7f7;text-align:center;}
+.application_list {position:relative;width:100%;padding:20px 15px;margin:0 auto 10px auto;background:#fff;box-shadow:0px 3px 5px rgba(0,0,0,0.1);text-align:left;color:#666;font-size:10.5pt;border-radius:5px;}
+.application_list b {color:#000;font-weight:500;font-size:12pt;margin-right:5px;}
+.ap_wrap .profile_thumb,
+.ap_wrap .img {width:70px;height:70px;}
+
+.ap_wrap .profile_thumb {margin-right:20px;}
+.ap_wrap .pull-right.col-md-3 {width:25%}
+.ap_wrap .pull-right a {position:relative;width:100%;float:left;color:#666;border:1px solid #ddd;padding:5px;text-align:center;margin:2px 0;}
+.ap_wrap .certi {color:#85d5d5;border:1px solid #85d5d5;}
+
+/*사업장변경*/
+#bsList {position:relative;width:100%;}
+#bsList ul {position:relative;width:100%;padding:0;margin:0;}
+#bsList ul li {position:relative;width:100%;padding:20px 30px;border-bottom:1px solid #ddd;color:#666;font-size:11pt;}
+#bsList ul li b {color:#000;font-weight:500;font-size:13pt;}
+#bsList ul li .fa-check-circle {position:absolute;top:30px;right:30px;font-size:20pt;color:#d5d5d5;}
+#bsList ul li:hover {cursor:pointer;}
+#bsList ul li.select {background-color: #e8f6f6;}
+#bsList ul li.select .fa-check-circle {color:#85d5d5 !important;}
+#bsList .new b {color:#666;}

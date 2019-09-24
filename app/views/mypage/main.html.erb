@@ -18,12 +18,18 @@
             <div class="pull-right col-md-9">
 
                 <span class="name"><%=current_user.name%> </span> <span class="certi">인증회원</span><br>
-
-                <%=current_user.provider%>연동<br/>
-                abcde@naver.com<br>
-                <%=current_user.accountNum%>
-
-                <%if current_user.phone? %><br><%=current_user.phone%><%end %>
+                <%if current_user.provider == 'kakao'%><!--kakao 로그인 한 회원-->
+                    <%=current_user.provider%>연동<br/>
+                    <%=current_user.bankName%><%=current_user.accountNum%>    
+                <%elsif current_user.profile == 'naver'%><!--naver 로그인 한 회원-->
+                    <%=current_user.provider%>연동<br/>
+                    <%=current_user.bankName%><%=current_user.accountNum%>
+                <%else%>
+                    <%=current_user.provider%>연동<br/>
+                    <%=current_user.accountNum%>
+                <%end%>
+                <br/>
+                <%if current_user.phone? %><%=current_user.phone%><%end %>
                 
                 <button class="btn_modify" onclick="location.href='/add_information/add/<%=current_user.id%>'"></button>
                 
@@ -35,8 +41,30 @@
             <ul>
 
                 <li>알림설정</li>
-                <li>푸시알림받기</li>
-                <li>SMS수신받기</li>
+                
+                <li>
+                <ul id="submenu">
+                    
+                    <li><i class="fas fa-bell"></i> 푸시알림받기
+                        
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="alram1" id="alram1" value="on">
+                        </div>
+                        
+                    </li>
+                    
+                        <li><i class="fas fa-envelope"></i> SMS수신받기
+                        
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="alram2" id="alram2" value="on">
+                        </div>
+                        
+                        
+                    </li>
+                    
+                </ul>
+                
+                </li>
 
                 <li class="arrow">공지사항</li>
                 <li class="arrow">이용약관</li>
@@ -60,3 +88,8 @@
 
 
     </div><!--wrap-->
+
+<link href="/css/switcher.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/js/jquery.switcher.js"></script>
+<script>
+$.switcher();</script>

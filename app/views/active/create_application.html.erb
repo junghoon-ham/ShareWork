@@ -1,10 +1,3 @@
-<style>
-  .success {
-         position:fixed;background:#4FC9DE;height:55px;left:0;bottom:0;
-    text-align:center;border-top:1px solid #ddd;max-width:500px;margin:0 auto;bottom: 0; left: 0; right: 0;
-       }
-</style>
-
 <script>
     function createToast(t) {
         switch (t) {
@@ -32,27 +25,86 @@
     });
 </script>
 
-<div id="wrap">
+<div id="wrap" class="st_info">
   <form method="post" name="writeForm" action="/active/createApplication">
-      <div>
-          <%= @bussiness.bs_name %> <br /><br />
-          날짜 <br />
-          <%= @job.date %> <br /><br />
-          시간 <br />
-          <%= @job.time_start %>시 ~ <%= @job.time_end %> <br /><br />
-          시급 <br />
-          <%= @job.pay %>원 <br /><br />
-          상세내용 <br />
-          <%= @job.etc %><br /><br />
-          지원자 현황 <br />
-          <%= @job.personnel %>명 모집 <br />
-          <%= @job.personnel_cnt %>명 지원 <br /><br />
+    
+  <div id="top_title2"><i class="fas fa-chevron-left" onClick="history.back();"></i> 상세정보</div>
+  
+   <!--업체정보 상단-->
+    <div class="st_top">
+        <div class="icon_fav"><i class="far fa-star"></i></div>
+        
+        <div class="img"><img src="http://cdnimage.ebn.co.kr/news/201710/news_1509339728_915222_main1.jpg"></div>
+       
+        <div class="info">
+            <div class="title">
+              <%= @bussiness.bs_name %>
+              <span>서울, 선릉로</span>
+              <span class="loc">200m</span>
+            </div>
+              
+            <a href="#" class="tag">#매장관리</a>
+            <a href="#" class="tag">#캐셔</a>
+            <a href="#" class="tag">#당일지급</a>
+        </div>
+    </div>    
+    <!--store info top-->
+    
+    <div id="graybar"></div>
+
+  
+      <div class="st_content">
+        
+        <table>
+          <tr>
+            <th>날짜</th>
+            <td><%= @job.date %> </td>
+          </tr>
+          
+          
+          <tr>
+            <th>시간</th>
+            <td><%= @job.time_start %>시 ~ <%= @job.time_end %>시</td>
+          </tr>
+          
+          
+          <tr>
+            <th>시급 </th>
+            <td>
+              <%= @job.pay %>원 <span class="total">예상 알바비 : 300,000원</span></td>
+          </tr>
+          
+          <tr>
+            <th>상세내용</th>
+            <td><%= @job.etc %></td>
+          </tr>
+        
+          
+          <tr>
+            <th>지원자 현황</th>
+            <td><%= @job.personnel %>명 모집 / <%= @job.personnel_cnt %>명 지원</td>
+          </tr>
+          
+          
+          <tr>
+            <th colspan="2">위치보기
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4742.758245057024!2d127.02914502952132!3d37.498215433731964!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xdbf9af292beff3c!2z6rCV64Ko!5e0!3m2!1sko!2skr!4v1568972348911!5m2!1sko!2skr" width="100%" height="200" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+            </th>
+          </tr>
+    
+        </table>
+
       </div>
-      
-      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  
+
+  
+          
       <input type="hidden" name="job_id" value=<%= @job.id %>>
-      <div class="success" style="cursor: pointer;">지원하기</div>
+      <div class="success btn_apply"><i class="far fa-edit"></i> 지원하기</div>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
   </form>
+
+
 </div>
 
 

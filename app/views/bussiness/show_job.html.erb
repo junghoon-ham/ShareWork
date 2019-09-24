@@ -4,19 +4,83 @@
   });
 </script>
 
-일 정보 <br />
-날짜 : <%= @job.date %> <br />
-시간 : <%= @job.time_start %>시 ~ <%= @job.time_end %>시<br />
-시급 : <%= @job.pay %> <br />
-상세내용 <br />
-<%= @job.etc %>
-<br /><br /><br />
 
-<a href="/bussiness/show_applicant?id=<%= @job.id %>">지원자 현황</a>
-<% @application.each do |application| %>
-  <div class="application_list" data-id=<%= application.id %> style="border: 1px solid gray">
-      이름 : <%= application.name %> <br />
-      주소 : <%= application.address1 %> <br />
-      전화번호 : <%= application.phone %> <br />
-  </div>
-<% end %>
+<div id="wrap" class="st_info">
+  
+<div id="top_title2"><i class="fas fa-chevron-left" onClick="history.back();"></i> 구인 상세내역</div>
+  
+
+  <div class="st_content">
+        
+        <table>
+          <tr>
+            <th>날짜</th>
+            <td><%= @job.date %> </td>
+          </tr>
+          
+          
+          <tr>
+            <th>시간</th>
+            <td><%= @job.time_start %>시 ~ <%= @job.time_end %>시</td>
+          </tr>
+          
+          
+          <tr>
+            <th>시급 </th>
+            <td>
+              <%= @job.pay %>원 <span class="total">예상 지급 : 300,000원</span></td>
+          </tr>
+          
+          <tr>
+            <th>상세내용</th>
+            <td><%= @job.etc %></td>
+          </tr>
+        
+          
+          <tr>
+            <th>지원자 현황</th>
+            <td><%= @job.personnel %>명 모집 / <%= @job.personnel_cnt %>명 지원</td>
+          </tr>
+          
+        </table>
+      
+      
+      </div>
+  
+      
+      
+
+      <div id="container" class="ap_wrap">
+        
+          <a href="/bussiness/show_applicant?id=<%= @job.id %>">지원자 현황</a>
+         
+          <% @application.each do |application| %>
+            <div class="application_list" data-id=<%= application.id %>>
+              
+                <div class="pull-left col-md-3">
+                  <div class="profile_thumb">
+                      <div class="img"><img src="<%=current_user.profileImg%>" alt="등록된 프로필 사진이 없습니다."></div>
+                 </div>
+                </div>
+                
+                
+                <div class="pull-left col-md-6">
+                  <b><%= application.name %></b><span class="certi">인증회원</span><br />
+                  <%= application.address1 %> <br />
+                  <%= application.phone %> <br />
+                </div>
+                
+                
+                <div class="pull-right col-md-3">
+                 <a href="#"><i class="fas fa-check"></i> 채택하기</a>
+                 <a href="tel:<%= application.phone %>"><i class="fas fa-phone-alt"></i> 전화걸기</a>
+  
+                </div>
+
+            </div>
+          <% end %>
+    
+     </div>
+     
+     
+</div><!--wrap-->
